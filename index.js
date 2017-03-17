@@ -15,7 +15,6 @@ export default class App extends Component {
     render() {
         return (
   			<div className="app-wrapper">
-  				<div className="image-background" />
   				<div className="fluid">
   					<MenuWrapper />
   				</div>
