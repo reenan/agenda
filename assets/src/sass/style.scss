@@ -1,0 +1,55 @@
+@import "_mixins";
+
+.grid {
+	@include clearfix();
+
+	display: inline-block;
+	width: 100%;
+
+	$gutterClassNameList: xs, s, m, l, xl;
+	$gutterValueList: 15, 30, 45, 60, 90;
+	$marginValueList: 7.5, 15, 22.5, 30, 45;
+	$columns: 12;
+
+	
+	$breakPoints: 368, 480, 768, 1024;
+	$breakPointsClassName: xs, s, m, l;
+
+	@for $i from 1 through length($gutterClassNameList) {
+		$gutterClassName: nth($gutterClassNameList, $i);
+		$gutterValue: nth($gutterValueList, $i);
+		$marginValue: nth($marginValueList, $i);
+
+		&.gutter-#{$gutterClassName} {
+			> .column {
+				margin: 0 #{$marginValue}px 0 #{$marginValue}px;
+
+				@for $k from 1 through $columns {
+					
+					@for $j from 1 through length($breakPoints) {
+						$breakPoint: nth($breakPoints, $j);
+						$breakPointClassName: nth($breakPointsClassName, $j);
+						
+						@media screen and (min-width: #{$breakPoint}px) {
+							&.#{$breakPointClassName}-#{$k} {
+								width: calc((100% - (#{$columns} / #{$k} - 1) * #{$gutterValue}px) / #{$columns} * #{$k});
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.column {
+		float: left;
+		
+		&:last-of-type {
+			margin-right: 0;
+		}
+
+		&:first-of-type {
+			margin-left: 0;
+		}
+	}
+}

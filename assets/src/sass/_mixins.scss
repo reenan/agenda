@@ -1,0 +1,88 @@
+@mixin transition($args...) {
+	-webkit-transition: $args;
+	-moz-transition: $args;
+	-o-transition: $args;
+	transition: $args;
+}
+
+@mixin box-shadow($size, $color) {
+	-moz-box-shadow: $size $color;
+	-webkit-box-shadow: $size $color;
+	box-shadow: $size $color;
+}
+
+@mixin text-overflow($type) {
+	white-space: nowrap;
+	text-overflow: $type;
+	-o-text-overflow: $type;
+	-ms-text-overflow: $type;
+	overflow: hidden;
+}
+
+@mixin transform($transform) {
+	-webkit-transform: $transform;
+	-ms-transform: $transform;
+	transform: $transform;
+}
+
+@mixin aspect-ratio($width, $height) {
+	position: relative;
+
+	&:before {
+		display: block;
+		content: "";
+		width: 100%;
+		padding-top: ($height / $width) * 100%;
+	}
+
+	> div {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+}
+
+@mixin focal-point-x($x) {
+	background-position-x: percentage($x);
+}
+
+@mixin focal-point-y($y) {
+	background-position-y: percentage($y);
+}
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content; 
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@-ms-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	} 
+}
+
+@mixin clearfix() {
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+@mixin box-sizing($value) {
+	-webkit-box-sizing: $value;
+	-moz-box-sizing: $value;
+	box-sizing: $value;
+}
+
+@mixin vertical-middle() {
+	display: inline-block;
+	vertical-align: middle;
+}
