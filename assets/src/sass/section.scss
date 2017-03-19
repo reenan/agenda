@@ -1,0 +1,16 @@
+@import '_mixins';
+
+.section-wrapper {
+	.header {
+		height: 90px;
+		border-bottom: 1px solid #c9c9c9;
+		text-align: right;
+
+		h2 {
+			line-height: 90px;
+			font-size: 32px;
+			text-transform: uppercase;
+			margin-right: 45px;
+		}
+	}
+}

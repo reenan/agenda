@@ -1,20 +1,37 @@
 {
-  "name": "webmarket",
-  "description": "webmarket",
+  "name": "agenda",
+  "description": "agenda",
   "repository": "x",
   "license": "y",
-  "author": "webmarket team :D",
+  "author": "Renan Souza da Silva",
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.26.1",
-    "material-ui": "^0.16.5",
+    "material-ui": "^0.16.6",
     "normalize.css": "^5.0.0",
     "react": "^15.4.1",
+    "react-addons-update": "^15.4.2",
     "react-dom": "^15.4.1",
+    "react-redux": "^5.0.3",
     "react-tap-event-plugin": "^2.0.1",
-    "webpack": "^1.14.0"
+    "redux": "^3.6.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {
+    "babel-preset-stage-0": "^6.22.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.10.0",
+    "node-sass": "^4.1.1",
+    "react-hot-loader": "^1.3.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1"
+  },
+  "scripts": {
+    "build": "webpack -p --display-errors-details --progress --colors",
+    "start": "webpack-dev-server --hot --progress --colors --inline --display-errors-details"
   }
 }

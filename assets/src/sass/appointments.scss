@@ -1,0 +1,21 @@
+@import '_mixins';
+
+.appointments-wrapper {
+	padding: 20px;
+
+	.weekdays {
+		text-align: center;
+
+		.day-number {
+			font-size: 44px;
+			color: rgb(0, 151, 167);
+		}
+	}
+
+	.row {
+		.col {
+			text-align: center;
+		}
+	}
+
+}

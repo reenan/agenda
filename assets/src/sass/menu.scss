@@ -1,0 +1,64 @@
+@import '_mixins';
+
+.side-menu {
+	background-color: #c4c4c4;
+	height: 100%;
+	posiion: relative;
+
+	.menu-item {
+		@include transition(border-left 300ms);
+		position: relative;
+		border-left: 2px solid transparent;
+		border-right: 2px solid transparent;
+		display: inline-block;
+		text-align: center;
+		width: 100%;
+		
+		.menu-icon {
+			display: inline-block;
+			position: relative;
+			margin: 15px 2px 15px 0;
+			text-align: center;
+			height: 36px;
+			width: 36px;
+
+			.icon {
+				@include transition(color 200ms);
+				line-height: 36px;
+				font-size: 18px;
+			}
+		}
+
+		.menu-name-tag {
+			@include transition(transform 400ms, opacity 300ms);
+			@include transform(scale(0));
+			cursor: pointer;
+			position: absolute;
+			bottom: 15px;
+			left: 65px;
+			text-transform: uppercase;
+			font-size: 11px;
+			padding: 15px 30px;
+			background-color: gray;
+			opacity: 0;
+		}
+
+		&.active, &:hover {
+			border-left: 2px solid #fff;
+			.menu-icon {
+				.icon {
+					color: #fff;
+				}
+			}
+		}
+
+		&:not(.active):hover {
+			cursor: pointer;
+			.menu-name-tag {
+				@include transform(scale(1));
+				opacity: 1;
+			}
+		}
+
+	}
+}
