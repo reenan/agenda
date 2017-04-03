@@ -66,7 +66,7 @@ class MenuItem extends Component {
         <div className='menu-icon'>
           <Icon icon={this.props.item.icon} />
         </div>
-        <div className='menu-name-tag'>{this.props.item.name}</div>
+        {/*<div className='menu-name-tag'>{this.props.item.name}</div>*/}
       </div>
     );
   }

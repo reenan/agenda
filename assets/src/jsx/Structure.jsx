@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
 
 class Structure extends Component {
 		static propTypes = {
-				className: PropTypes.string,
+			className: PropTypes.string,
 		};
 
 		constructor(props) {

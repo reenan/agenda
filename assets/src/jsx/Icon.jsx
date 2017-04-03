@@ -9,7 +9,8 @@ class Icon extends Component {
     };
 
     static defaultProps = {
-      className: ''
+      className: '',
+      style: {}
     };
 
     constructor(props) {
@@ -18,8 +19,7 @@ class Icon extends Component {
 
     render() {
         return (
-        	<div className={'icon icon-' + this.props.icon + ' ' + this.props.className}>
-
+        	<div style={this.props.style} className={'icon icon-' + this.props.icon + ' ' + this.props.className}>
        		</div>
         );
     }

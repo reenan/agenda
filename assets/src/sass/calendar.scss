@@ -1,0 +1,35 @@
+@import '_mixins';
+
+.calendar-wrapper {
+	> div {
+		width: 100% !important;
+
+		> div > div > div > span {
+			width: 14.28% !important;
+		}
+	}
+}
+
+.events {
+	.event-list {
+		width: 95%;
+	}
+	.when-avatar {
+		padding: 5px 10px;
+		background-color: rgb(255, 64, 129);
+		color: black;
+		text-align: center;
+
+		p {
+			font-size: 11px;
+			text-transform: uppercase;
+		}
+	}
+
+}
+
+.modal-action-buttons {
+	.float-button { 
+		float: left !important;
+	}
+}

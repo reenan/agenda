@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 
 import HomeSection from './HomeSection.jsx';
+import CalendarSection from './CalendarSection.jsx';
+
 
 import style from '../sass/section.scss'
 

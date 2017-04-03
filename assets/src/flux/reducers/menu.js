@@ -18,7 +18,7 @@ let menuList = [{
 	icon: 'cog'
 }];
 
-const menu = (state = {menuList: menuList, activeMenu: 0}, action) => {
+const menu = (state = {menuList: menuList, activeMenu: 1}, action) => {
 	switch (action.type) {
 		case 'SELECT_MENU':
 			return update(state, {activeMenu: {$set: action.activeMenu}})

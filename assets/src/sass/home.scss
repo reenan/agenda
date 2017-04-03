@@ -2,6 +2,19 @@
 
 .section-wrapper {
 	.home {
-		
+
+		.next-events {
+			.when-avatar {
+				padding: 5px 10px;
+				background-color: rgb(255, 64, 129);
+				color: black;
+				text-align: center;
+
+				p {
+					font-size: 11px;
+					text-transform: uppercase;
+				}
+			}
+		}
 	}
 }
