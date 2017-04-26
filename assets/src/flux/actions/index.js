@@ -34,3 +34,18 @@ export const selectMenu = (menu) => {
 		activeMenu: menu
 	}
 }
+
+export const saveEvent = (item) => {
+	return {
+		type: 'SAVE_EVENT',
+		eventItem: item
+	}
+}
+
+export const deleteEvent = (id) => {
+	return {
+		type: 'DELETE_EVENT',
+		id: id
+	}
+}
+
