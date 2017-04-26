@@ -19,9 +19,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AgendaApplication {
 
 	public static void main(String[] args) {
-		if (args == null || args.length == 0)
-			args = new String[] { "--server.port=8090" };
-
 		SpringApplication.run(AgendaApplication.class, args);
 	}
 
