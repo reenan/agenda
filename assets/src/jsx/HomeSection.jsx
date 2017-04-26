@@ -10,7 +10,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Subheader from 'material-ui/Subheader';
 import Dialog from 'material-ui/Dialog';
 
-import { Events } from './CalendarSection.jsx';
+import { Events } from './EventSection.jsx';
 import { Row, Col } from './Grid.jsx';
 
 import { saveEvent, deleteEvent } from '../flux/actions/index.js';

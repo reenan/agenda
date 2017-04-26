@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 
 import HomeSection from './HomeSection.jsx';
-import CalendarSection from './CalendarSection.jsx';
+import EventSection from './EventSection.jsx';
 
 import style from '../sass/section.scss'
 
@@ -67,7 +67,7 @@ class SectionContent extends Component {
  				contentComponent = <HomeSection />
  				break;
  			case 1:
- 				contentComponent = <CalendarSection />
+ 				contentComponent = <EventSection />
  				break;
  			case 2:
  				contentComponent = <NotesSection />
