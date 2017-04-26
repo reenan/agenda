@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import HomeSection from './HomeSection.jsx';
 import CalendarSection from './CalendarSection.jsx';
 
-
 import style from '../sass/section.scss'
 
 const mapStateToProps = (state, ownProps) => {
@@ -72,9 +71,6 @@ class SectionContent extends Component {
  				break;
  			case 2:
  				contentComponent = <NotesSection />
- 				break;
- 			case 3:
- 				contentComponent = <ConfigurationSection />
  				break;
  		}
 

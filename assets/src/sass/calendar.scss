@@ -11,8 +11,11 @@
 }
 
 .events {
+	margin-left: 15px;
+
 	.event-list {
 		width: 95%;
+		margin-bottom: 30px;
 	}
 	.when-avatar {
 		padding: 5px 10px;
@@ -31,5 +34,15 @@
 .modal-action-buttons {
 	.float-button { 
 		float: left !important;
+	}
+}
+
+.title-input {
+	input {
+		font-size: 22px !important;
+		margin-bottom: -10px !important;
+	}
+	input + div {
+		display: none;
 	}
 }

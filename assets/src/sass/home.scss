@@ -4,7 +4,7 @@
 	.home {
 
 		.next-events {
-			.when-avatar {
+			/*.when-avatar {
 				padding: 5px 10px;
 				background-color: rgb(255, 64, 129);
 				color: black;
@@ -14,6 +14,9 @@
 					font-size: 11px;
 					text-transform: uppercase;
 				}
+			}*/
+			> div > div {
+				box-shadow: none !important;
 			}
 		}
 	}
