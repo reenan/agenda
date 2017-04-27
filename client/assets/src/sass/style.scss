@@ -1,19 +1,23 @@
 @import '_mixins';
 @import '_reset';
 
-html, body, #app, .app-wrapper, .main-wrapper, .row, .col {
+html, body, #app, .app-wrapper, .main-wrapper, .full-height {
 	height: 100%;
 }
 
 .app-wrapper {
-	background-color: rgb(48, 48, 48);
 
 	* {
 		font-family: 'Roboto';
+		@include box-sizing(border-box);
+	}
+
+	[class*='col-'] {
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.fixed-menu, .section {
-		display: inline-block;
 		height: 100%;
 	}
 }

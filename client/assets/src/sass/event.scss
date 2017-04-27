@@ -1,0 +1,78 @@
+@import '_mixins';
+
+.event-section {
+	@media screen and (min-width: 992px) {
+		margin-top: 30px;
+	}
+	.calendar-wrapper {
+		> div {
+			width: 100% !important;
+
+			> div > div > div > span {
+				width: 14.28% !important;
+			}
+		}
+	}
+
+	.add-event {
+		margin: 30px 0;
+		text-align: center;
+
+		> button {
+			width: 100%;
+		}
+	}
+}
+
+.events {
+	@media screen and (min-width: 992px) {
+		padding-right: 30px !important;
+	}
+
+	.event-list-scroll {
+		height: 350px !important;
+
+		.event-list {
+			width: 95%;
+			margin-bottom: 30px;
+		}
+	}
+
+	.add-event {
+		margin-top: 15px;
+		
+		> button {
+			.icon.icon-plus {
+				display: inline-block;
+			}
+		}
+	}
+
+	.when-avatar {
+		padding: 5px 10px;
+		background-color: rgba(0, 151, 167, 0.2);
+		text-align: center;
+
+		p {
+			font-size: 11px;
+			text-transform: uppercase;
+		}
+	}
+
+}
+
+.modal-action-buttons {
+	.float-button { 
+		float: left !important;
+	}
+}
+
+.title-input {
+	input {
+		font-size: 22px !important;
+		margin-bottom: -10px !important;
+	}
+	input + div {
+		display: none;
+	}
+}

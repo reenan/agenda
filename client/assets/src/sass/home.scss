@@ -2,21 +2,20 @@
 
 .section-wrapper {
 	.home {
-
+		@media screen and (min-width: 992px) {
+			margin-top: 30px;
+		}
 		.next-events {
-			/*.when-avatar {
-				padding: 5px 10px;
-				background-color: rgb(255, 64, 129);
-				color: black;
-				text-align: center;
-
-				p {
-					font-size: 11px;
-					text-transform: uppercase;
-				}
-			}*/
-			> div > div {
+			.card {
 				box-shadow: none !important;
+			}
+		}
+
+		.more-button {
+			> button {
+				width: 100%;
+				margin: 30px 0;
+				text-align: center;
 			}
 		}
 	}

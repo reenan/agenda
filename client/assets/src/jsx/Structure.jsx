@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Row, Col } from './Grid.jsx';
-import { connect } from 'react-redux'
+//import { Row, Col } from './Grid.jsx';
+import { connect } from 'react-redux';
+
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import SideMenu from './SideMenu.jsx';
 import Section from './Section.jsx';
@@ -25,14 +27,16 @@ class Structure extends Component {
 		render() {
 				return (
 					 <div className='main-wrapper'>
-						<Row gutter='no-gutter'>
-							<Col className='fixed-menu' size={1}>
-								<SideMenu />
-							</Col>
-							<Col className='section' size={11}>
-								<Section />
-							</Col>
-						</Row>
+						<Grid fluid={true}>	
+							<Row className='full-height'>
+								<Col className='fixed-menu' xs={12}>
+									<SideMenu />
+								</Col>
+								<Col className='section' xs={12}>
+									<Section />
+								</Col>
+							</Row>
+						</Grid>
 					</div> 
 				);
 		}

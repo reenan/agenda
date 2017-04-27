@@ -6,16 +6,12 @@ let menuList = [{
 	icon: 'home'
 }, {
 	id: 1,
-	name: 'Calendário',
+	name: 'Eventos',
 	icon: 'calendar'
 }, {
 	id: 2,
 	name: 'Lembretes',
 	icon: 'file-text'
-}, {
-	id: 3,
-	name: 'Configurações',
-	icon: 'cog'
 }];
 
 const menu = (state = {menuList: menuList, activeMenu: 0}, action) => {

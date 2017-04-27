@@ -53,6 +53,28 @@
 	background-position-y: percentage($y);
 }
 
+@mixin animation ($name, $duration, $delay) {
+    -webkit-animation-delay: $delay;
+    -webkit-animation-duration: $duration;
+    -webkit-animation-name: $name;
+    -webkit-animation-fill-mode: forwards;
+
+    -moz-animation-delay: $delay;
+    -moz-animation-duration: $duration;
+    -moz-animation-name: $name;
+    -moz-animation-fill-mode: forwards;
+
+    -o-animation-delay: $delay;
+    -o-animation-duration: $duration;
+    -o-animation-name: $name;
+    -o-animation-fill-mode: forwards;
+
+    animation-delay: $delay;
+    animation-duration: $duration;
+    animation-name: $name;
+    animation-fill-mode: forwards;
+}
+
 @mixin keyframes($name) {
 	@-webkit-keyframes #{$name} {
 		@content; 

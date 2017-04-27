@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import HomeSection from './HomeSection.jsx';
 import EventSection from './EventSection.jsx';
+import NoteSection from './NoteSection.jsx';
 
 import style from '../sass/section.scss'
 
@@ -21,26 +22,7 @@ class Section extends Component {
 	render() {
 		return (
 			<div className='section-wrapper'>
-				<SectionHeader activeMenu={this.props.menuList[this.props.activeMenu]}  />
 				<SectionContent activeMenu={this.props.activeMenu} />
-			</div>
-		);
-	}
-}
-
-class SectionHeader extends Component {
-	static propTypes = {
-		className: PropTypes.string,
-	};
-
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
-			<div className='header'>
-				<h2>{this.props.activeMenu.name}</h2>
 			</div>
 		);
 	}
@@ -70,7 +52,7 @@ class SectionContent extends Component {
  				contentComponent = <EventSection />
  				break;
  			case 2:
- 				contentComponent = <NotesSection />
+ 				contentComponent = <NoteSection />
  				break;
  		}
 

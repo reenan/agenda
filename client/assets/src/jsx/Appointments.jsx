@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import Calendar from 'material-ui/DatePicker/Calendar';
 import { connect } from 'react-redux'
 
-import { Row, Col } from './Grid.jsx';
+//import { Row, Col } from './Grid.jsx';
+import { Grid, Row, Col } from 'react-bootstrap';
+
 
 import { selectDate } from '../flux/actions/index.js';
 

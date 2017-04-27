@@ -49,3 +49,17 @@ export const deleteEvent = (id) => {
 	}
 }
 
+export const saveNote = (item) => {
+	return {
+		type: 'SAVE_NOTE',
+		noteItem: item
+	}
+}
+
+export const deleteNote = (id) => {
+	return {
+		type: 'DELETE_NOTE',
+		id: id
+	}
+}
+

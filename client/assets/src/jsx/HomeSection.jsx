@@ -11,7 +11,11 @@ import Subheader from 'material-ui/Subheader';
 import Dialog from 'material-ui/Dialog';
 
 import { Events } from './EventSection.jsx';
-import { Row, Col } from './Grid.jsx';
+
+
+//import { Row, Col } from './Grid.jsx';
+import { Grid, Row, Col } from 'react-bootstrap';
+
 
 import { saveEvent, deleteEvent } from '../flux/actions/index.js';
 
@@ -85,14 +89,16 @@ class HomeSection extends Component {
 	render() {
 		return (
 			 <div className='home'>
-			 	<Row gutter='no-gutter'>
-			 		<Col size={6}>
-						<NextEvents closeAllEvents={this.closeAllEvents} isOpenAllEvents={this.state.isOpenAllEvents} openAllEvents={this.openAllEvents} eventList={this.props.eventList} deleteEvent={this.deleteEvent} saveEvent={this.saveEvent} />
-			 		</Col>
-			 		<Col size={6}>
-			 			<Notes noteList={this.props.noteList} />
-			 		</Col>
-			 	</Row>
+			 	<Grid fluid={true}>
+			 		<Row>
+				 		<Col md={6} xs={12}>
+							<NextEvents closeAllEvents={this.closeAllEvents} isOpenAllEvents={this.state.isOpenAllEvents} openAllEvents={this.openAllEvents} eventList={this.props.eventList} deleteEvent={this.deleteEvent} saveEvent={this.saveEvent} />
+				 		</Col>
+				 		<Col md={6} xs={12}>
+				 			<Notes noteList={this.props.noteList} />
+				 		</Col>
+				 	</Row>
+			 	</Grid>
 			 	<Snackbar autoHideDuration={3000} message={this.state.snackbarText} open={this.state.isOpenSnackbar} onRequestClose={this.closeSnackbar} />
 			 </div>
 		 );
@@ -138,7 +144,6 @@ class NextEvents extends Component {
 		this.monthList = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	}
 
-
 	render() {
 
 		let itensList = [];
@@ -160,15 +165,15 @@ class NextEvents extends Component {
 			item = this.props.eventList[count];
 			itensList.push(
 				<div key={this.props.eventList[count].id}>
-					<Card>
+					<Card className='card'>
 						<CardHeader
-							title={item.name.length < 30 ? item.name : item.name.substr(0, 30) + '...'}
+							title={item.name.length < 35 ? item.name : item.name.substr(0, 32) + '...'}
 							subtitleStyle={{marginTop: "5px"}}
 							subtitle={item.date.getDate() + ' ' + this.monthList[item.date.getMonth()]}
 							actAsExpander={true}
 							showExpandableButton={true}
 						/>
-						<CardText expandable={true}>
+						<CardText expandable={true} className='description'>
 							{item.description}
 						</CardText>
 					</Card>

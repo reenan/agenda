@@ -4,76 +4,61 @@ import { connect } from 'react-redux'
 import Icon from './Icon.jsx';
 
 import { selectMenu } from '../flux/actions/index.js';
-import style from '../sass/menu.scss';
+//import style from '../sass/menu.scss';
+
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    menuList: state.menu.menuList,
-    activeMenu: state.menu.activeMenu
-  }
+	return {
+		menuList: state.menu.menuList,
+		activeMenu: state.menu.activeMenu
+	}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    selectMenu: (menu) => {
-      dispatch(selectMenu(menu))
-    }
-  }
+	return {
+		selectMenu: (menu) => {
+			dispatch(selectMenu(menu))
+		}
+	}
 }
 
 class SideMenu extends Component {
-    static propTypes = {
-        className: PropTypes.string,
-    };
+		static propTypes = {
+				className: PropTypes.string,
+		};
 
-    constructor(props) {
-        super(props);
-    }
+		constructor(props) {
+				super(props);
+		}
 
-    render() {
-        return (
-        	<div className='side-menu'>
-            {
-              this.props.menuList.map((item) => {
-                return <MenuItem onClick={this.props.selectMenu} item={item} key={item.id} active={this.props.activeMenu == item.id} />
-              })
-            }
-       		</div>
-        );
-    }
+		onClick = (id) => {
+			this.props.selectMenu(id);
+		}
+
+		render() {
+				return (
+					<div className='side-menu'>
+						<Tabs initialSelectedIndex={this.props.activeMenu}>
+							{
+								this.props.menuList.map((item) => {
+									return (
+										<Tab 
+											icon={<Icon style={{marginBottom: '5px'}} icon={item.icon} key={1} />}
+											onClick={this.onClick.bind(this, item.id)} 
+											key={item.id}
+											label={item.name}
+										/>
+									)
+								})
+							}
+						</Tabs>
+					</div>
+				);
+		}
 }
-
-class MenuItem extends Component {
-  static popTypes = {
-    item: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
-  onClick = () => {
-    if(this.props.active) {
-      return;
-    }
-    this.props.onClick(this.props.item.id);
-  }
-
-  render() {
-    return (
-      <div onClick={this.onClick} className={'menu-item' + (this.props.active ? ' active': '')}>
-        <div className='menu-icon'>
-          <Icon icon={this.props.item.icon} />
-        </div>
-        {/*<div className='menu-name-tag'>{this.props.item.name}</div>*/}
-      </div>
-    );
-  }
-}
-
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(SideMenu)

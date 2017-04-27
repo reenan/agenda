@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import Calendar from 'material-ui/DatePicker/Calendar';
 import { connect } from 'react-redux'
 
 import Snackbar from 'material-ui/Snackbar';
@@ -16,36 +15,30 @@ import Icon from './Icon.jsx';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
+import style from '../sass/note.scss';
 
-import style from '../sass/event.scss';
-
-import { selectDate, saveEvent, deleteEvent } from '../flux/actions/index.js';
+import { saveNote, deleteNote } from '../flux/actions/index.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		currentDate: state.calendar.currentDate,
-		eventList: state.events.eventList
+		noteList: state.notes.noteList
 	}
 }
 
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		selectDate: (date) => {
-			dispatch(selectDate(date))
+		saveNote: (item) => {
+			dispatch(saveNote(item))
 		},
 
-		saveEvent: (item) => {
-			dispatch(saveEvent(item))
-		},
-
-		deleteEvent: (id) => {
-			dispatch(deleteEvent(id));
+		deleteNote: (id) => {
+			dispatch(deleteNote(id));
 		}
 	}
 }
 
-class EventSection extends Component {
+class NoteSection extends Component {
 		static propTypes = {
 			className: PropTypes.string,
 		};
@@ -55,24 +48,19 @@ class EventSection extends Component {
 
 				this.state = {
 					snackbarText: '',
-					isOpenSnackbar: false,
-					dateToCreate: null
+					isOpenSnackbar: false
 				}
 		}
 
-		onSelectDate = (e, date) => {
-			this.props.selectDate(date);
+		deleteNote = (id) => {
+			this.props.deleteNote(id);
 		}
 
-		deleteEvent = (id) => {
-			this.props.deleteEvent(id);
-		}
-
-		saveEvent = (item) => {
+		saveNote = (item) => {
 			this.setState({
 				isOpenSnackbar: true,
-				snackbarText: 'Evento salvo com sucesso'
-			}, this.props.saveEvent(item))
+				snackbarText: 'Lembrete salvo com sucesso'
+			}, this.props.saveNote(item))
 		}
 
 		closeSnackbar = () => {
@@ -84,14 +72,11 @@ class EventSection extends Component {
 
 		render() {
 				return (
-					<div className='event-section'>
+					<div className='note-section'>
 						<Grid fluid={true}>
 							<Row>
-								<Col md={8}>
-									<Events dateToCreate={this.props.currentDate} deleteEvent={this.deleteEvent} saveEvent={this.saveEvent} eventList={this.props.eventList} />
-								</Col>
-								<Col md={4} className='calendar-wrapper'>
-									<Calendar onTouchTapDay={this.onSelectDate} firstDayOfWeek={1} />
+								<Col md={12}>
+									<Notes deleteNote={this.deleteNote} saveNote={this.saveNote} noteList={this.props.noteList} />
 								</Col>
 							</Row>
 						</Grid>
@@ -101,21 +86,14 @@ class EventSection extends Component {
 		}
 }
 
-class Events extends Component {
+class Notes extends Component {
 	constructor(props) {
 		super(props);
 		this.monthList = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 		this.state = {
 			currentOpenModal: null,
-			showCreateModal: false,
-			dateToCreate: null
-		}
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if(this.props.dateToCreate != prevProps.dateToCreate) {
-			this.openEventCreateModal();
+			showCreateModal: false
 		}
 	}
 
@@ -131,26 +109,26 @@ class Events extends Component {
 		});
 	}
 
-	deleteEvent = (id) => {
+	deleteNote = (id) => {
 		this.closeModal();
-		this.props.deleteEvent(id);
+		this.props.deleteNote(id);
 	}
 
-	openEventCreateModal = () => {
+	openNoteCreateModal = () => {
 		this.setState({
 			showCreateModal: true
 		});
 	}
 
-	closeEventCreateModal = () => {
+	closeNoteCreateModal = () => {
 		this.setState({
 			showCreateModal: false
 		});
 	}
 
-	saveEvent = (item) => {
-		this.closeEventCreateModal();
-		this.props.saveEvent(item);
+	saveNote = (item) => {
+		this.closeNoteCreateModal();
+		this.props.saveNote(item);
 	}
 
 	render() {
@@ -159,33 +137,32 @@ class Events extends Component {
 		let item = null;
 		let count = 0;
 
-		while(itensList.length < this.props.eventList.length) {
-			item = this.props.eventList[count];
+		while(itensList.length < this.props.noteList.length) {
+			item = this.props.noteList[count];
 			itensList.push(
 				[
 					<ListItem 
-						key={this.props.eventList[count].id}
+						key={this.props.noteList[count].id}
 						leftAvatar={
 							<div className='when-avatar'>
 								<p>
-									{item.date.getDate()}
+									INÍCIO: XX/XX/XXXX
 								</p>
 								<p>
-									{this.monthList[item.date.getMonth()]}
+									TÉRMINO: XX/XX/XXXX
 								</p>
 							</div>
 						}
-						primaryText={item.name.length < 30 ? item.name : item.name.substr(0, 27) + '...'}
-				   		secondaryText={item.description ? item.description : '<i>sem descrição</i>'}
+				   		primaryText={item.description ? item.description : '<i>sem descrição</i>'}
 				   		onClick={this.openModal.bind(this, item.id)}
 			   		/>,
-			   		<EventModal
-			   			key={'modal-' + this.props.eventList[count].id}
+			   		<NoteModal
+			   			key={'modal-' + this.props.noteList[count].id}
 			   			item={item}
 			   			open={this.state.currentOpenModal == item.id}
 			   			onClose={this.closeModal}
-			   			deleteEvent={this.props.deleteEvent}
-			   			saveEvent={this.props.saveEvent}
+			   			deleteNote={this.props.deleteNote}
+			   			saveNote={this.props.saveNote}
 			   		/>
 		   	]
 		   	);
@@ -193,23 +170,23 @@ class Events extends Component {
 		}
 
 		return (
-			<List className='events'>
+			<List className='notes'>
 				<div>
-					<Scrollbars className='event-list-scroll'>
-						<div className='event-list'>
+					<Scrollbars className='note-list-scroll'>
+						<div className='note-list'>
 		 					{
 		 						itensList.length > 0 ? 
-		 							itensList : '<p>Nenhum evento encontrado</p>'
+		 							itensList : '<p>Nenhum notas encontrado</p>'
 		 					}
 		 				</div>
 		 			</Scrollbars>
-		 			<div className='add-event'>
+		 			<div className='add-note'>
 		 				<FlatButton
 		 					icon={<Icon icon='plus' />}
-							label="Criar evento"
+							label="Criar notas"
 							primary={true}
 							keyboardFocused={false}
-							onTouchTap={this.openEventCreateModal}
+							onTouchTap={this.openNoteCreateModal}
 						/>
 
 						{
@@ -222,7 +199,7 @@ class Events extends Component {
 								/> : null
 						}
 
-						<EventEditModal dateToCreate={this.props.dateToCreate} item={null} saveEvent={this.saveEvent} closeModal={this.closeEventCreateModal} open={this.state.showCreateModal} />
+						<NoteEditModal item={null} saveNote={this.saveNote} closeModal={this.closeEventCreateModal} open={this.state.showCreateModal} />
 		 			</div>
 		 		</div>
 	 		</List>
@@ -230,7 +207,7 @@ class Events extends Component {
 	}
 }
 
-class EventModal extends Component {
+class NoteModal extends Component {
 
 	static defaultProps = {
 		showCancel: false,
@@ -246,10 +223,10 @@ class EventModal extends Component {
 		}
 	}
 
-	saveEvent = (item) => {
+	saveNote = (item) => {
 		this.setState({
 			showEditModal: false
-		}, this.props.saveEvent(item));
+		}, this.props.saveNote(item));
 	}
 
 	openEdit = () => {
@@ -277,7 +254,7 @@ class EventModal extends Component {
 	}
 
 	confirmDelete = () => {
-		this.props.deleteEvent(this.props.item.id);
+		this.props.deleteNote(this.props.item.id);
 
 		this.setState({
 			showDeleteModalConfirm: false
@@ -329,16 +306,12 @@ class EventModal extends Component {
 		];
 		return (
 				<Dialog
-					title={this.props.item.name}
 					actions={actions}
 					modal={false}
 					open={this.props.open}
 					onRequestClose={this.props.onClose}
 				>
 					<p>{this.props.item.description}</p>
-					<br />
-					<br />
-					<p>{this.props.item.date.toString()} - {this.props.item.hour.getHours()}:{this.props.item.hour.getMinutes()}</p>
 
 					<Dialog
 						title={'Confirmar exclusão'}
@@ -348,71 +321,44 @@ class EventModal extends Component {
 						onRequestClose={this.cancelDelete}
 						contentStyle={{width: '450px'}}
 					>
-						<p>Você tem certeza que deseja excluir esse evento?</p>
+						<p>Você tem certeza que deseja excluir esse lembrete?</p>
 						<p>Essa ação é irreversível.</p> 
 					</Dialog>
 
-					<EventEditModal item={this.props.item} saveEvent={this.saveEvent} closeModal={this.closeEdit} open={this.state.showEditModal} />
+					<NoteEditModal item={this.props.item} saveNote={this.saveNote} closeModal={this.closeEdit} open={this.state.showEditModal} />
 				</Dialog>
 		)
 	}
 }
 
-class EventEditModal extends Component {
+class NoteEditModal extends Component {
 	constructor(props) {
 		super(props);
 
 		if(this.props.item != null) {
 			this.state = {
 				description: this.props.item.description,
-				name: this.props.item.name,
-				hour: this.props.item.hour,
-				date: this.props.item.date
 			}
 		}  else {
 			this.state = {
 				description: undefined,
-				name: undefined,
-				hour: undefined,
-				date: undefined	
 			}
 		}
 
 	}
 
-	saveEvent = () => {
+	saveNote = () => {
 		let item = {
 			id: this.props.item != null ? this.props.item.id : null,
-			name: this.state.name,
 			description: this.state.description,
-			date: this.state.date,
-			hour: this.state.hour,
 		}
 
-		this.props.saveEvent(item);
+		this.props.saveNote(item);
 	}
 
 	changeDescription = (e, value) => {
 		this.setState({
 			description: value
-		});
-	}
-
-	changeHour = (e, value) => {
-		this.setState({
-			hour: value
-		});
-	}
-
-	changeDate = (e, value) => {
-		this.setState({
-			date: value
-		});
-	}
-
-	changeName = (e, value) => {
-		this.setState({
-			name: value
 		});
 	}
 
@@ -429,26 +375,13 @@ class EventEditModal extends Component {
 					label="Salvar"
 					primary={true}
 					keyboardFocused={false}
-					onTouchTap={this.saveEvent}
+					onTouchTap={this.saveNote}
 				/>
 			</div>
 		];
 
 		return (
 				<Dialog
-					title={
-						<div>
-							<TextField
-								className='title-input'
-								hintText='Título'
-								name='name'
-								hintStyle={{fontSize: '22px'}}
-								fullWidth={true}
-								defaultValue={this.state.name}
-								onChange={this.changeName}
-							/>
-						</div>
-					}
 					actions={editActions}
 					modal={false}
 					open={this.props.open}
@@ -463,30 +396,13 @@ class EventEditModal extends Component {
 						defaultValue={this.state.description}
 						onChange={this.changeDescription}
 					/>
-					<DatePicker 
-						name='date'
-						label="Data" 
-						hintText="Data" 
-						defaultDate={this.props.dateToCreate != null ? this.props.dateToCreate : this.state.date}
-						onChange={this.changeDate}
-					/>
-					<TimePicker 
-						name='hour'
-						label="Horário" 
-						hintText="Horário" 
-						format='24hr' 
-						defaultTime={this.state.hour}
-						onChange={this.changeHour}
-					/>
 				</Dialog>
 		)
 	}
 }
 
 
-export { Events };
-
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(EventSection)
+)(NoteSection)

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { render } from 'react-dom';
 import { MuiThemeProvider } from 'material-ui';
 
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { Provider } from 'react-redux';
@@ -36,7 +35,7 @@ export default Component;
 
 render(
 	<Provider store={store}>
-		<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+		<MuiThemeProvider>
 			<App />
 		</MuiThemeProvider>
 	</Provider>,
