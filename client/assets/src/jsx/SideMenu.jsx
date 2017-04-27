@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class SideMenu extends Component {
 		static propTypes = {
-				className: PropTypes.string,
+			className: PropTypes.string,
 		};
 
 		constructor(props) {
@@ -39,7 +39,7 @@ class SideMenu extends Component {
 		render() {
 				return (
 					<div className='side-menu'>
-						<Tabs initialSelectedIndex={this.props.activeMenu}>
+						<Tabs value={this.props.activeMenu}>
 							{
 								this.props.menuList.map((item) => {
 									return (
@@ -47,6 +47,7 @@ class SideMenu extends Component {
 											icon={<Icon style={{marginBottom: '5px'}} icon={item.icon} key={1} />}
 											onClick={this.onClick.bind(this, item.id)} 
 											key={item.id}
+											value={item.id}
 											label={item.name}
 										/>
 									)

@@ -14,6 +14,8 @@ import Subheader from 'material-ui/Subheader';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from './Icon.jsx';
 
+import EmptyList from './EmptyList.jsx';
+
 import { Grid, Row, Col } from 'react-bootstrap';
 
 
@@ -65,7 +67,10 @@ class EventSection extends Component {
 		}
 
 		deleteEvent = (id) => {
-			this.props.deleteEvent(id);
+			this.setState({
+				isOpenSnackbar: true,
+				snackbarText: 'Evento deletado com sucesso'
+			}, this.props.deleteEvent(id))
 		}
 
 		saveEvent = (item) => {
@@ -104,7 +109,7 @@ class EventSection extends Component {
 class Events extends Component {
 	constructor(props) {
 		super(props);
-		this.monthList = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		this.monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 		this.state = {
 			currentOpenModal: null,
@@ -159,8 +164,14 @@ class Events extends Component {
 		let item = null;
 		let count = 0;
 
-		while(itensList.length < this.props.eventList.length) {
+		while(count < this.props.eventList.length) {
 			item = this.props.eventList[count];
+			
+			if(item == undefined) {
+				count++;
+				continue;
+			}
+
 			itensList.push(
 				[
 					<ListItem 
@@ -175,8 +186,8 @@ class Events extends Component {
 								</p>
 							</div>
 						}
-						primaryText={item.name.length < 30 ? item.name : item.name.substr(0, 27) + '...'}
-				   		secondaryText={item.description ? item.description : '<i>sem descrição</i>'}
+						primaryText={item.name ? <p className='limit-text'>{item.name}</p> : <i>Sem título</i>}
+				   		secondaryText={item.description ? item.description : <i>sem descrição</i>}
 				   		onClick={this.openModal.bind(this, item.id)}
 			   		/>,
 			   		<EventModal
@@ -195,14 +206,14 @@ class Events extends Component {
 		return (
 			<List className='events'>
 				<div>
-					<Scrollbars className='event-list-scroll'>
-						<div className='event-list'>
-		 					{
-		 						itensList.length > 0 ? 
-		 							itensList : '<p>Nenhum evento encontrado</p>'
-		 					}
-		 				</div>
-		 			</Scrollbars>
+					{
+						itensList.length > 0 ?
+							<Scrollbars style={{height: (itensList.length * 80) + 'px'}} className='event-list-scroll'>
+								<div className='event-list'>
+									{itensList}
+				 				</div>
+				 			</Scrollbars> : <EmptyList text='Nenhum evento encontrado' />
+					}
 		 			<div className='add-event'>
 		 				<FlatButton
 		 					icon={<Icon icon='plus' />}
@@ -338,7 +349,7 @@ class EventModal extends Component {
 					<p>{this.props.item.description}</p>
 					<br />
 					<br />
-					<p>{this.props.item.date.toString()} - {this.props.item.hour.getHours()}:{this.props.item.hour.getMinutes()}</p>
+					<p>{this.props.item.date.toString() + (this.props.item.hour != undefined ? ' - ' + this.props.item.hour.getHours()+':'+this.props.item.hour.getMinutes() : null)}</p>
 
 					<Dialog
 						title={'Confirmar exclusão'}
@@ -374,7 +385,7 @@ class EventEditModal extends Component {
 				description: undefined,
 				name: undefined,
 				hour: undefined,
-				date: undefined	
+				date: new Date()	
 			}
 		}
 

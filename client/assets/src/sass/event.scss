@@ -30,7 +30,7 @@
 	}
 
 	.event-list-scroll {
-		height: 350px !important;
+		max-height: 350px !important;
 
 		.event-list {
 			width: 95%;
@@ -71,8 +71,9 @@
 	input {
 		font-size: 22px !important;
 		margin-bottom: -10px !important;
-	}
-	input + div {
-		display: none;
+	
+		+ div {
+			display: none;
+		}
 	}
 }

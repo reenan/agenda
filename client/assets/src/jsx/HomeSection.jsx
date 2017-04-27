@@ -4,39 +4,31 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 
-import Avatar from 'material-ui/Avatar';
-import Snackbar from 'material-ui/Snackbar';
 import Subheader from 'material-ui/Subheader';
-import Dialog from 'material-ui/Dialog';
 
-import { Events } from './EventSection.jsx';
+import Icon from './Icon.jsx';
+import EmptyList from './EmptyList.jsx';
 
-
-//import { Row, Col } from './Grid.jsx';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-
-import { saveEvent, deleteEvent } from '../flux/actions/index.js';
+import { selectMenu } from '../flux/actions/index.js';
 
 import style from '../sass/home.scss'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		currentDate: state.calendar.currentDate,
 		eventList: state.events.eventList,
-		noteList: state.notes.noteList
+		noteList: state.notes.noteList,
+		activeMenu: state.menu.activeMenu
 	}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		saveEvent: (item) => {
-			dispatch(saveEvent(item))
-		},
-
-		deleteEvent: (id) => {
-			dispatch(deleteEvent(id));
+		selectMenu: (id) => {
+			dispatch(selectMenu(id))
 		}
 	}
 }
@@ -48,42 +40,10 @@ class HomeSection extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			snackbarText: '',
-			isOpenSnackbar: false,
-			isOpenAllEvents: false
-		}
 	}
 
-	deleteEvent = (id) => {
-		this.props.deleteEvent(id);
-	}
-
-	saveEvent = (item) => {
-		this.setState({
-			isOpenSnackbar: true,
-			snackbarText: 'Evento salvo com sucesso'
-		}, this.props.saveEvent(item))
-	}
-
-	closeSnackbar = () => {
-		this.setState({
-			isOpenSnackbar: false,
-			snackbarText: ''
-		});
-	}
-
-	closeAllEvents = () => {
-		this.setState({
-			isOpenAllEvents: false
-		});
-	}
-
-	openAllEvents = () => {
-		this.setState({
-			isOpenAllEvents: true
-		});
+	selectMenu = (id) => {
+		this.props.selectMenu(id);
 	}
 
 	render() {
@@ -92,14 +52,13 @@ class HomeSection extends Component {
 			 	<Grid fluid={true}>
 			 		<Row>
 				 		<Col md={6} xs={12}>
-							<NextEvents closeAllEvents={this.closeAllEvents} isOpenAllEvents={this.state.isOpenAllEvents} openAllEvents={this.openAllEvents} eventList={this.props.eventList} deleteEvent={this.deleteEvent} saveEvent={this.saveEvent} />
+							<NextEvents selectMenu={this.selectMenu.bind(this, 1)} eventList={this.props.eventList} />
 				 		</Col>
 				 		<Col md={6} xs={12}>
-				 			<Notes noteList={this.props.noteList} />
+				 			<Notes selectMenu={this.selectMenu.bind(this, 2)} noteList={this.props.noteList} />
 				 		</Col>
 				 	</Row>
 			 	</Grid>
-			 	<Snackbar autoHideDuration={3000} message={this.state.snackbarText} open={this.state.isOpenSnackbar} onRequestClose={this.closeSnackbar} />
 			 </div>
 		 );
 	}
@@ -108,40 +67,17 @@ class HomeSection extends Component {
 class Notes extends Component {
 	constructor(props) {
 		super(props);
+		this.monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+		this.state = {
+			openItem: null
+		}
 	}
 
-	render() {
-
-		let itensList = [];
-		let count = 0;
-
-		while(itensList.length < 4 && itensList.length < this.props.noteList.length) {
-			itensList.push(
-				<ListItem 
-					key={this.props.noteList[count].id}
-					primaryText={this.props.noteList[count].description.length < 200 ? this.props.noteList[count].description : this.props.noteList[count].description.substr(0, 200) + '...'}
-			    />
-			);
-			count++;
-		}
-
-		if(this.props.noteList.length > itensList.length) {
-			itensList.push(<MoreItens key={itensList.length} />);
-		}
-
-		return (
-			<List className='notes'>
-				<Subheader>Lembretes</Subheader>
-				{itensList}
-			</List>
-		);
-	}
-}
-
-class NextEvents extends Component {
-	constructor(props) {
-		super(props);
-		this.monthList = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	openItem = (id) => {
+		this.setState({
+			openItem: (id == this.state.openItem ? null : id)
+		});
 	}
 
 	render() {
@@ -150,55 +86,104 @@ class NextEvents extends Component {
 		let item = null;
 		let count = 0;
 
-		const actions = [
-			<div className='modal-action-buttons'>
-				<FlatButton
-					label="Cancelar"
-					primary={true}
-					keyboardFocused={false}
-					onTouchTap={this.props.closeAllEvents}
-				/>
-			</div>
-		];
+		while(count < 4 && count < this.props.noteList.length) {
+			item = this.props.noteList[count];
 
-		while(itensList.length < 4 && itensList.length < this.props.eventList.length) {
-			item = this.props.eventList[count];
+			if(item == undefined) {
+				count++;
+				continue;
+			}
+
 			itensList.push(
-				<div key={this.props.eventList[count].id}>
-					<Card className='card'>
-						<CardHeader
-							title={item.name.length < 35 ? item.name : item.name.substr(0, 32) + '...'}
-							subtitleStyle={{marginTop: "5px"}}
-							subtitle={item.date.getDate() + ' ' + this.monthList[item.date.getMonth()]}
-							actAsExpander={true}
-							showExpandableButton={true}
-						/>
-						<CardText expandable={true} className='description'>
-							{item.description}
-						</CardText>
-					</Card>
-				</div>
+				<ListItem
+					key={count}
+					className={'item' + (this.state.openItem == item.id ? ' open' : '')}
+					primaryText={(item.title ? <p className='limit-text'>{item.title}</p> : <i>Sem título</i>)}
+					leftIcon={<Icon className='item-icon' icon='info' />}
+					open={this.state.openItem == item.id}
+					onClick={this.openItem.bind(this, item.id)}
+					nestedItems={[
+						<Card key={'card-'+count} className='item'>
+							<CardHeader
+								title={item.begin.getDate() + ' ' + this.monthList[item.begin.getMonth()] + (item.end ? (' to ' + item.end.getDate() + ' ' + this.monthList[item.end.getMonth()]) : '')}
+							/>
+							<CardText className='description'>
+								{item.description ? item.description : <i>sem descrição</i>}
+							</CardText>
+						</Card>
+					]}
+				/>
+			);
+			count++;
+		}
+		return (
+			<List className='active-notes'>
+				<Subheader>Lembretes</Subheader>
+				{itensList.length > 0 ? itensList : <EmptyList text='Nenhum lembrete encontrado' />}
+				<MoreItens text='Ver lembretes' onClick={this.props.selectMenu} />
+			</List>
+		);
+	}
+}
+
+class NextEvents extends Component {
+	constructor(props) {
+		super(props);
+		this.monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+		this.state = {
+			openItem: null
+		}
+	}
+
+	openItem = (id) => {
+		this.setState({
+			openItem: (id == this.state.openItem ? null : id)
+		});
+	}
+
+	render() {
+
+		let itensList = [];
+		let item = null;
+		let count = 0;
+
+		while(count < 4 && count < this.props.eventList.length) {
+			item = this.props.eventList[count];
+
+			if(item == undefined) {
+				count++;
+				continue;
+			}
+
+			itensList.push(
+				<ListItem
+					key={count}
+					className={'item' + (this.state.openItem == item.id ? ' open' : '')}
+					primaryText={item.name ? (<p className='limit-text'>{item.name}</p>) : <i>Sem título</i>}
+					secondaryText={item.date.getDate() + ' ' + this.monthList[item.date.getMonth()] + (item.hour ? (' às ' + item.hour.getHours() + ':' + item.hour.getMinutes()) : '')}
+					leftIcon={<Icon className='item-icon' icon='calendar' />}
+					open={this.state.openItem == item.id}
+					onClick={this.openItem.bind(this, item.id)}
+					nestedItems={[
+						<Card key={'card-'+count} className='item'>
+							<CardText className='description'>
+								{item.description ? item.description : <i>sem descrição</i>}
+							</CardText>
+						</Card>
+					]}
+				/>
 		   	);
 
 			count++;
 		}
 
-		if(this.props.eventList.length > itensList.length) {
-			itensList.push(<MoreItens onClick={this.props.openAllEvents} key={this.props.eventList[itensList.length - 1].id + 1} />);
-		}
-
 		return (
-			<div className='next-events'>
+			<List className='next-events'>
 				<Subheader>Próximos eventos</Subheader>
-	 			{itensList}
-	 			<Dialog
-					modal={false}
-					open={this.props.isOpenAllEvents}
-					onRequestClose={this.props.closeAllEvents}
-				>
-	 				<Events showCancel={true} onClose={this.props.closeAllEvents} deleteEvent={this.props.deleteEvent} saveEvent={this.props.saveEvent} eventList={this.props.eventList} />
-	 			</Dialog>
-	 		</div>
+	 			{itensList.length > 0 ? itensList : <EmptyList text='Nenhum evento encontrado' />}
+	 			<MoreItens text='Ver eventos' onClick={this.props.selectMenu} key={'a'} />
+	 		</List>
 		);
 	}
 }
@@ -211,7 +196,7 @@ class MoreItens extends Component {
 	render() {
 		return (
 			<div className='more-button'>	
-				<FlatButton onTouchTap={this.props.onClick} label='Ver todos' />
+				<FlatButton onTouchTap={this.props.onClick} label={this.props.text} />
 			</div>
 		);
 	}

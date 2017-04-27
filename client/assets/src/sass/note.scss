@@ -20,15 +20,6 @@
 		padding-right: 30px !important;
 	}
 
-	.note-list-scroll {
-		height: 350px !important;
-
-		.note-list {
-			width: 95%;
-			margin-bottom: 30px;
-		}
-	}
-
 	.add-note {
 		margin-top: 15px;
 		
@@ -44,6 +35,13 @@
 		background-color: rgba(0, 151, 167, 0.2);
 		text-align: center;
 
+		+ .limit-text, + i {
+			margin-left: 15px;
+			+ div, + i {
+				margin-left: 15px !important;
+			}
+		}
+
 		p {
 			font-size: 11px;
 			text-transform: uppercase;
@@ -55,5 +53,16 @@
 .modal-action-buttons {
 	.float-button { 
 		float: left !important;
+	}
+}
+
+.title-input {
+	input {
+		font-size: 22px !important;
+		margin-bottom: -10px !important;
+		
+		+ div {
+			display: none;
+		}
 	}
 }

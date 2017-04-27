@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from './Icon.jsx';
+import EmptyList from './EmptyList.jsx';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -53,7 +54,10 @@ class NoteSection extends Component {
 		}
 
 		deleteNote = (id) => {
-			this.props.deleteNote(id);
+			this.setState({
+				isOpenSnackbar: true,
+				snackbarText: 'Lembrete deletado com sucesso'
+			}, this.props.deleteNote(id))
 		}
 
 		saveNote = (item) => {
@@ -89,7 +93,7 @@ class NoteSection extends Component {
 class Notes extends Component {
 	constructor(props) {
 		super(props);
-		this.monthList = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		this.monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 		this.state = {
 			currentOpenModal: null,
@@ -137,8 +141,14 @@ class Notes extends Component {
 		let item = null;
 		let count = 0;
 
-		while(itensList.length < this.props.noteList.length) {
+		while(count < this.props.noteList.length) {
 			item = this.props.noteList[count];
+			
+			if(item == undefined) {
+				count++;
+				continue;
+			}
+			
 			itensList.push(
 				[
 					<ListItem 
@@ -146,14 +156,18 @@ class Notes extends Component {
 						leftAvatar={
 							<div className='when-avatar'>
 								<p>
-									INÍCIO: XX/XX/XXXX
-								</p>
-								<p>
-									TÉRMINO: XX/XX/XXXX
-								</p>
+									{item.begin.getDate()} {this.monthList[item.begin.getMonth()]}
+								</p> 
+								{
+									item.end != undefined ?
+										<p>
+											item.end.getDate() + ' ' + this.monthList[item.end.getMonth()]
+										</p> : null
+								}
 							</div>
 						}
-				   		primaryText={item.description ? item.description : '<i>sem descrição</i>'}
+				   		primaryText={item.title ? <p className='limit-text'>{item.title}</p> : <i>Sem título</i>}
+				   		secondaryText={item.description ? item.description : <i>sem descrição</i>}
 				   		onClick={this.openModal.bind(this, item.id)}
 			   		/>,
 			   		<NoteModal
@@ -172,18 +186,16 @@ class Notes extends Component {
 		return (
 			<List className='notes'>
 				<div>
-					<Scrollbars className='note-list-scroll'>
-						<div className='note-list'>
-		 					{
-		 						itensList.length > 0 ? 
-		 							itensList : '<p>Nenhum notas encontrado</p>'
-		 					}
-		 				</div>
-		 			</Scrollbars>
+					<div className='note-list'>
+	 					{
+	 						itensList.length > 0 ? 
+	 							itensList : <EmptyList text='Nenhum lembrete encontrado' />
+	 					}
+	 				</div>
 		 			<div className='add-note'>
 		 				<FlatButton
 		 					icon={<Icon icon='plus' />}
-							label="Criar notas"
+							label="Criar lembretes"
 							primary={true}
 							keyboardFocused={false}
 							onTouchTap={this.openNoteCreateModal}
@@ -254,11 +266,9 @@ class NoteModal extends Component {
 	}
 
 	confirmDelete = () => {
-		this.props.deleteNote(this.props.item.id);
-
 		this.setState({
 			showDeleteModalConfirm: false
-		});
+		}, this.props.deleteNote(this.props.item.id));
 
 	}
 
@@ -306,13 +316,20 @@ class NoteModal extends Component {
 		];
 		return (
 				<Dialog
+					title={this.props.item.title}
 					actions={actions}
 					modal={false}
 					open={this.props.open}
 					onRequestClose={this.props.onClose}
 				>
 					<p>{this.props.item.description}</p>
-
+					<br />
+					<br />
+					<p>{this.props.item.begin.toString()}</p>
+					{
+						this.props.item.end != undefined ?
+							[<br key={1} />, <p key={2}>{this.props.item.end.toString()}</p>] : null
+					}
 					<Dialog
 						title={'Confirmar exclusão'}
 						actions={deleteActions}
@@ -338,19 +355,27 @@ class NoteEditModal extends Component {
 		if(this.props.item != null) {
 			this.state = {
 				description: this.props.item.description,
+				title: this.props.item.title,
+				begin: this.props.item.begin,
+				end: this.props.item.end
 			}
 		}  else {
 			this.state = {
 				description: undefined,
+				title: undefined,
+				end: undefined,
+				begin: new Date()
 			}
 		}
-
 	}
 
 	saveNote = () => {
 		let item = {
 			id: this.props.item != null ? this.props.item.id : null,
 			description: this.state.description,
+			title: this.state.title,
+			end: this.state.end,
+			begin: this.state.begin
 		}
 
 		this.props.saveNote(item);
@@ -359,6 +384,24 @@ class NoteEditModal extends Component {
 	changeDescription = (e, value) => {
 		this.setState({
 			description: value
+		});
+	}
+
+	changeTitle = (e, value) => {
+		this.setState({
+			title: value
+		});
+	}
+
+	changeEnd = (e, value) => {
+		this.setState({
+			end: value
+		});
+	}
+
+	changeBegin = (e, value) => {
+		this.setState({
+			begin: value
 		});
 	}
 
@@ -382,6 +425,19 @@ class NoteEditModal extends Component {
 
 		return (
 				<Dialog
+					title={
+						<div>
+							<TextField
+								className='title-input'
+								hintText='Título'
+								name='title'
+								hintStyle={{fontSize: '22px'}}
+								fullWidth={true}
+								defaultValue={this.state.title}
+								onChange={this.changeTitle}
+							/>
+						</div>
+					}
 					actions={editActions}
 					modal={false}
 					open={this.props.open}
@@ -396,8 +452,23 @@ class NoteEditModal extends Component {
 						defaultValue={this.state.description}
 						onChange={this.changeDescription}
 					/>
+					<DatePicker 
+						name='begin'
+						label="Início" 
+						hintText="Início" 
+						defaultDate={this.state.begin}
+						onChange={this.begin}
+					/>
+					<DatePicker 
+						name='end'
+						label="Término" 
+						hintText="Término" 
+						defaultDate={this.state.end}
+						onChange={this.changeEnd}
+					/>
+					
 				</Dialog>
-		)
+		)	
 	}
 }
 

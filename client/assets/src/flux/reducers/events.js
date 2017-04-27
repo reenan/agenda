@@ -44,13 +44,15 @@ let eventList = [{
 	tag: 'red'
 }];
 
+eventList = [];
+
 const events = (state = {eventList: sortByDate(eventList)}, action) => {
 	switch (action.type) {
 		case 'SAVE_EVENT':
 			let item = action.eventItem;
 
 			if(item.id == null) {
-				item.id = state.eventList[state.eventList.length - 1].id + 1;
+				item.id = state.eventList.length > 0 ? state.eventList[state.eventList.length - 1].id + 1 : 1;
 			}
 
 			return { eventList: sortByDate(update(state.eventList, {[item.id]: {$set: item}})) };

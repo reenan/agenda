@@ -5,10 +5,26 @@
 		@media screen and (min-width: 992px) {
 			margin-top: 30px;
 		}
-		.next-events {
-			.card {
-				box-shadow: none !important;
+
+		@media screen and (max-width: 992px) { 
+			.active-notes {
+				margin-top: 45px;
 			}
+		}
+
+		.active-notes, .next-events {
+			.item.open {
+				background-color: rgba(201, 201, 201, 0.4) !important;
+			}
+		}
+
+		.item-icon {
+			text-align: center;
+			text-align: center;
+			margin-top: 15px !important;
+			display: table !important;
+			margin-left: 25px !important;
+			color: rgba(0, 188, 212, 0.8);
 		}
 
 		.more-button {
@@ -16,6 +32,9 @@
 				width: 100%;
 				margin: 30px 0;
 				text-align: center;
+			}
+			@media screen and (max-width: 992px) { 
+				border-bottom: 1px solid rgba(0, 188, 212, 0.25);
 			}
 		}
 	}
