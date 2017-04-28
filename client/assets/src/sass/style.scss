@@ -1,16 +1,45 @@
 @import '_mixins';
 @import '_reset';
 
-html, body, #app, .app-wrapper, .main-wrapper, .full-height {
-	height: 100%;
-}
+html {
+	zoom: 1;
 
-.app-wrapper {
+	&.is-mobile {
+		zoom: 3;
+	}
 
 	* {
 		font-family: 'Roboto';
 		@include box-sizing(border-box);
 	}
+	
+	@media screen and (min-width: 992px) {
+		body {
+			background-color: #c9c9c9;
+			text-align: center;
+			
+			&:before {
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				font-size: 44px;
+				text-transform: uppercase;
+				content: 'Diminua o navegador';
+			}
+		}
+		.main-wrapper {
+			display: none;
+		}
+
+	}
+}
+
+html, body, #app, .app-wrapper, .main-wrapper, .full-height {
+	height: 100%;
+}
+
+.app-wrapper {
 
 	[class*='col-'] {
 		padding-left: 0;
