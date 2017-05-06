@@ -161,8 +161,8 @@ class Notes extends Component {
 								{
 									item.end != undefined ?
 										<p>
-											item.end.getDate() + ' ' + this.monthList[item.end.getMonth()]
-										</p> : null
+											{item.end.getDate() + ' ' + this.monthList[item.end.getMonth()]}
+										</p> : ''
 								}
 							</div>
 						}
@@ -208,7 +208,7 @@ class Notes extends Component {
 									label="Cancelar"
 									keyboardFocused={false}
 									onTouchTap={this.props.onClose}
-								/> : null
+								/> : ''
 						}
 
 						<NoteEditModal item={null} saveNote={this.saveNote} closeModal={this.closeEventCreateModal} open={this.state.showCreateModal} />
@@ -328,7 +328,7 @@ class NoteModal extends Component {
 					<p>{this.props.item.begin.toString()}</p>
 					{
 						this.props.item.end != undefined ?
-							[<br key={1} />, <p key={2}>{this.props.item.end.toString()}</p>] : null
+							[<br key={1} />, <p key={2}>{this.props.item.end.toString()}</p>] : ''
 					}
 					<Dialog
 						title={'Confirmar exclusão'}
@@ -432,7 +432,6 @@ class NoteEditModal extends Component {
 								hintText='Título'
 								name='title'
 								hintStyle={{fontSize: '22px'}}
-								fullWidth={true}
 								defaultValue={this.state.title}
 								onChange={this.changeTitle}
 							/>
@@ -448,7 +447,6 @@ class NoteEditModal extends Component {
 						hintText="Descrição"
 						floatingLabelText="Descrição"
 						multiLine={true}
-						fullWidth={true}
 						defaultValue={this.state.description}
 						onChange={this.changeDescription}
 					/>

@@ -26,17 +26,6 @@ class App extends Component {
 		this.insertFakeMobile = false;
 	}
 
-	componentWillMount() {
-		let iFrame = document.getElementById("fake-mobile");
-		if(iFrame == null) {
-			this.insertFakeMobile = true;
-		}
-
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-			document.getElementsByTagName("html")[0].className += " is-mobile";
-		}
-	}
-
 	render() {
 		return (
 			<div className="app-wrapper">

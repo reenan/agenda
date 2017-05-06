@@ -51,10 +51,10 @@ class HomeSection extends Component {
 			 <div className='home'>
 			 	<Grid fluid={true}>
 			 		<Row>
-				 		<Col md={6} xs={12}>
+				 		<Col xs={12}>
 							<NextEvents selectMenu={this.selectMenu.bind(this, 1)} eventList={this.props.eventList} />
 				 		</Col>
-				 		<Col md={6} xs={12}>
+				 		<Col xs={12}>
 				 			<Notes selectMenu={this.selectMenu.bind(this, 2)} noteList={this.props.noteList} />
 				 		</Col>
 				 	</Row>

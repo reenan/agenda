@@ -50,12 +50,21 @@ const events = (state = {eventList: sortByDate(eventList)}, action) => {
 	switch (action.type) {
 		case 'SAVE_EVENT':
 			let item = action.eventItem;
+			let eventList = state.eventList;
 
 			if(item.id == null) {
-				item.id = state.eventList.length > 0 ? state.eventList[state.eventList.length - 1].id + 1 : 1;
+				if(state.eventList.length > 0) {
+					item.id = state.eventList[state.eventList.length - 1].id + 1;
+					eventList = sortByDate(update(state.eventList, {[item.id]: {$set: item}}));
+				} else {
+					item.id = 0;
+					eventList[0] = item;
+				}
+			} else {
+				eventList = sortByDate(update(state.eventList, {[item.id]: {$set: item}}));
 			}
 
-			return { eventList: sortByDate(update(state.eventList, {[item.id]: {$set: item}})) };
+			return { eventList: eventList };
 
 		case 'DELETE_EVENT':
 			let id = action.id;

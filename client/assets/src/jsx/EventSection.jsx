@@ -349,7 +349,7 @@ class EventModal extends Component {
 					<p>{this.props.item.description}</p>
 					<br />
 					<br />
-					<p>{this.props.item.date.toString() + (this.props.item.hour != undefined ? ' - ' + this.props.item.hour.getHours()+':'+this.props.item.hour.getMinutes() : null)}</p>
+					<p>{this.props.item.date.toString() + (this.props.item.hour != undefined ? ' - ' + this.props.item.hour.getHours()+':'+this.props.item.hour.getMinutes() : '')}</p>
 
 					<Dialog
 						title={'Confirmar exclusão'}
@@ -454,7 +454,6 @@ class EventEditModal extends Component {
 								hintText='Título'
 								name='name'
 								hintStyle={{fontSize: '22px'}}
-								fullWidth={true}
 								defaultValue={this.state.name}
 								onChange={this.changeName}
 							/>
@@ -470,7 +469,6 @@ class EventEditModal extends Component {
 						hintText="Descrição"
 						floatingLabelText="Descrição"
 						multiLine={true}
-						fullWidth={true}
 						defaultValue={this.state.description}
 						onChange={this.changeDescription}
 					/>

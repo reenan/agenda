@@ -44,11 +44,21 @@ const notes = (state = {noteList: noteList}, action) => {
 	switch (action.type) {
 		case 'SAVE_NOTE':
 			let item = action.noteItem;
+			let noteList = state.noteList;
+
 			if(item.id == null) {
-				item.id = state.noteList.length > 0 ? state.noteList[state.noteList.length - 1].id + 1 : 1;
+				if(state.noteList.length > 0) {
+					item.id = state.noteList[state.noteList.length - 1].id + 1;
+					noteList = update(state.noteList, {[item.id]: {$set: item}});
+				} else {
+					item.id = 0;
+					noteList[0] = item;
+				}
+			} else {
+				noteList = update(state.noteList, {[item.id]: {$set: item}});
 			}
 
-			return { noteList: update(state.noteList, {[item.id]: {$set: item}}) };
+			return { noteList: noteList };
 
 		case 'DELETE_NOTE':
 			let id = action.id;
