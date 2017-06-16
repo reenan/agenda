@@ -2,12 +2,9 @@ package lamba.agenda.api.web.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -31,23 +28,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Note implements PK<Long> {
+public class Note {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_NOTE")
-	@SequenceGenerator(name = "SEQ_NOTE", sequenceName = "S_NOTE", allocationSize = 1)
+	@GeneratedValue
 	private Long			id;
-
-	@Column
 	private String			title;
-
-	@Column
 	private String			description;
-
-	@Column
 	private LocalDateTime	begin	= LocalDateTime.now();
-
-	@Column
 	private LocalDateTime	end;
 
 }

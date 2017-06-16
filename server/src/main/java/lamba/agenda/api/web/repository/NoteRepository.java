@@ -1,7 +1,7 @@
 package lamba.agenda.api.web.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import lamba.agenda.api.web.entity.Note;
 
@@ -15,7 +15,7 @@ import lamba.agenda.api.web.entity.Note;
  *         </ul>
  *
  */
-@Repository
+@RepositoryRestResource(path = "notes", collectionResourceRel = "notes")
 public interface NoteRepository extends PagingAndSortingRepository<Note, Long> {
 
 }

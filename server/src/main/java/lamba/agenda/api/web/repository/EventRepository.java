@@ -1,7 +1,7 @@
 package lamba.agenda.api.web.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import lamba.agenda.api.web.entity.Event;
 
@@ -15,7 +15,7 @@ import lamba.agenda.api.web.entity.Event;
  *         </ul>
  *
  */
-@Repository
+@RepositoryRestResource(collectionResourceRel = "event", path = "event")
 public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
 
 }
