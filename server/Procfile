@@ -1,0 +1,2 @@
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port 44920 target/*.war
+web java -Dserver.port=$PORT $JAVA_OPTS -jar target/agenda-1.0.0.jar
