@@ -1,0 +1,169 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Agenda",
+		"_postman_id": "3a541c7e-350e-fa79-f881-99ed2064f79b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"description": "",
+			"item": [
+				{
+					"name": "/events",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Title test\",\n\t\"description\" : \"Description test\",\n\t\"date\" : \"\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/events/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events/10",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Title test\",\n\t\"description\" : \"Description test\",\n\t\"date\" : \"2020-06-17T00:00:00.000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "events",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "events/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events/1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "events/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"description": "",
+			"item": [
+				{
+					"name": "/notes",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/notes/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Title test\",\n\t\"description\" : \"Description test\",\n\t\"begin\" : \"2020-06-17T00:00:00.000\",\n\t\"end\" : \"2020-06-18T00:00:00.000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/notes/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/notes/11",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Title test\",\n\t\"description\" : \"Description test\",\n\t\"begin\" : \"2020-06-17T00:00:00.000\",\n\t\"end\" : \"2020-06-18T00:00:00.000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "notes",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/notes/",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "notes/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/notes/1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "notes/{id}",
+					"request": {
+						"url": "https://polar-fjord-40584.herokuapp.com/events/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
