@@ -211,7 +211,7 @@ class Notes extends Component {
 								/> : ''
 						}
 
-						<NoteEditModal item={null} saveNote={this.saveNote} closeModal={this.closeEventCreateModal} open={this.state.showCreateModal} />
+						<NoteEditModal item={null} saveNote={this.saveNote} closeModal={this.closeNoteCreateModal} open={this.state.showCreateModal} />
 		 			</div>
 		 		</div>
 	 		</List>
@@ -248,6 +248,7 @@ class NoteModal extends Component {
 	}
 
 	closeEdit = () => {
+		console.log('??');
 		this.setState({
 			showEditModal: false
 		})

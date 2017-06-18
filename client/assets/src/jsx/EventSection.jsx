@@ -18,7 +18,6 @@ import EmptyList from './EmptyList.jsx';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-
 import style from '../sass/event.scss';
 
 import { selectDate, saveEvent, deleteEvent } from '../flux/actions/index.js';
@@ -29,7 +28,6 @@ const mapStateToProps = (state, ownProps) => {
 		eventList: state.events.eventList
 	}
 }
-
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
@@ -164,8 +162,10 @@ class Events extends Component {
 		let item = null;
 		let count = 0;
 
-		while(count < this.props.eventList.length) {
-			item = this.props.eventList[count];
+		let eventList = this.props.eventList;
+
+		while(count < eventList.length) {
+			item = eventList[count];
 			
 			if(item == undefined) {
 				count++;
@@ -175,7 +175,7 @@ class Events extends Component {
 			itensList.push(
 				[
 					<ListItem 
-						key={this.props.eventList[count].id}
+						key={eventList[count].id}
 						leftAvatar={
 							<div className='when-avatar'>
 								<p>
@@ -191,7 +191,7 @@ class Events extends Component {
 				   		onClick={this.openModal.bind(this, item.id)}
 			   		/>,
 			   		<EventModal
-			   			key={'modal-' + this.props.eventList[count].id}
+			   			key={'modal-' + eventList[count].id}
 			   			item={item}
 			   			open={this.state.currentOpenModal == item.id}
 			   			onClose={this.closeModal}
@@ -393,7 +393,7 @@ class EventEditModal extends Component {
 
 	saveEvent = () => {
 		let item = {
-			id: this.props.item != null ? this.props.item.id : null,
+			id: this.props.item != null ? this.props.item.id : undefined,
 			name: this.state.name,
 			description: this.state.description,
 			date: this.state.date,

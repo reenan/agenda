@@ -63,3 +63,17 @@ export const deleteNote = (id) => {
 	}
 }
 
+export const setEvents = (events) => {
+	return {
+		type: 'SET_EVENTS',
+		events: events
+	}
+}
+
+export const setNotes = (notes) => {
+	return {
+		type: 'SET_NOTES',
+		notes: notes
+	}
+}
+

@@ -1,90 +1,95 @@
 import update from 'react-addons-update';
 
-let eventList = [{
-	id: 0,
-	name: 'Show Legal',
-	date: new Date(new Date().setDate(new Date().getDate())),
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	hour: new Date(),
-	tag: 'red'
-},{
-	id: 1,
-	name: 'Teatro Cultural Apresentação Única em Porto Alegre',
-	description: 'Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vulputate, diam scelerisque aliquet ultrices, metus risus dictum augue.',
-	date: new Date(new Date().setDate(new Date().getDate() + 10)),
-	hour: new Date(),
-	tag: 'blue'
-},{
-	id: 2,
-	name: 'Reunião',
-	description: 'Pellentesque luctus neque neque, in congue erat vulputate sed. Vestibulum egestas felis et enim posuere, vel tristique elit feugiat.',
-	date: new Date(new Date().setDate(new Date().getDate() + 20)),
-	hour: new Date(),
-	tag: 'green'
-},{
-	id: 3,
-	name: 'Aniversário',
-	description: 'Fusce velit elit, aliquet quis mauris in, lobortis eleifend sem. Nunc porttitor elit efficitur luctus blandit. Etiam nec dui ut lorem malesuada tincidunt a ac lectus.',
-	date: new Date(new Date().setDate(new Date().getDate() + 30)),
-	hour: new Date(),
-	tag: 'yellow'
-},{
-	id: 4,
-	name: 'Viagem',
-	description: 'Suspendisse potenti. Vivamus fermentum cursus magna ac tempus. Sed aliquet congue augue, eu egestas diam fringilla et.',
-	date: new Date(new Date().setDate(new Date().getDate() + 40)),
-	hour: new Date(),
-	tag: 'blue'
-},{
-	id: 5,
-	name: 'Trabalho',
-	description: 'Vivamus mauris risus, tempus at auctor sed, ornare ac erat. Aliquam felis erat, aliquam ac ipsum vel, tempor faucibus felis. Suspendisse condimentum nisl sodales ante consequat molestie.',
-	date: new Date(new Date().setDate(new Date().getDate() + 50)),
-	hour: new Date(),
-	tag: 'red'
-}];
+const events = (state = {eventList: []}, action) => {
+	let eventList = null;
+	let item = null;
+	let id = null;
+	let settings = null;
 
-eventList = [];
-
-const events = (state = {eventList: sortByDate(eventList)}, action) => {
 	switch (action.type) {
-		case 'SAVE_EVENT':
-			let item = action.eventItem;
-			let eventList = state.eventList;
 
-			if(item.id == null) {
-				if(state.eventList.length > 0) {
-					item.id = state.eventList[state.eventList.length - 1].id + 1;
-					eventList = sortByDate(update(state.eventList, {[item.id]: {$set: item}}));
-				} else {
-					item.id = 0;
-					eventList[0] = item;
-				}
+		case 'SET_EVENTS':
+			let list = action.events.map((item) => {
+				item = update(item, {
+					date: {$set: new Date(item.date)},
+					hour: {$set: new Date(item.date)},
+					name: {$set: item.title}
+				});
+
+				return item;
+			});
+
+			return { eventList: (list) }
+
+		case 'SAVE_EVENT':
+			item = action.eventItem;
+			let oldItem = action.eventItem;
+			eventList = state.eventList;
+
+			let date = item.date;
+
+			if(item.hours) {
+				date.setHours(item.hours.getHours());
+				date.setMinutes(item.hours.getMinutes());
+				date = date.toISOString().split(".");
+				date = date[0];
 			} else {
-				eventList = sortByDate(update(state.eventList, {[item.id]: {$set: item}}));
+				date.setHours('00');
+				date.setMinutes('00');
+				date = date.toISOString().split(".");
+				date = date[0];
 			}
+
+			item = update(item, {
+				date: {$set: date},
+				title: {$set: item.name}
+			});
+
+			settings = {
+				async: false,
+				crossDomain: true,
+				"headers": {
+					"content-type": "application/json"
+				},
+				processData: false,
+				method: item.id == null ? "POST" : "PUT",
+				data: JSON.stringify(item)
+			};
+
+			$.ajax(update(settings, {$merge: {url: helper.urls.events + (item.id == null ? '' : item.id)}})).done((response) => {
+				console.log(response.id);
+				eventList = (update(state.eventList, {[response.id]: {$set: update(oldItem, {$merge: {id: response.id}})}}));
+			});
 
 			return { eventList: eventList };
 
 		case 'DELETE_EVENT':
-			let id = action.id;
+			id = action.id;
+
+			console.log(id, state.eventList);
+
 			let index = getIndexById(state.eventList, id);
-			return { eventList: sortByDate(update(state.eventList, {$splice: [[index, 1]]})) };
+
+			settings = {
+				async: false,
+				crossDomain: true,
+				processData: false,
+				method: "DELETE",
+				data: JSON.stringify({id: id})
+			};
+
+			$.ajax(update(settings, {$merge: {url: helper.urls.events + id}}));
+
+			return { eventList: (update(state.eventList, {$splice: [[index, 1]]})) };
 
 		default:
 			return state
 	}
 }
 
-function sortByDate(list) {
-	return list.sort(function(a, b){
-		return new Date(a.date) - new Date(b.date);
-	});
-}
-
 function getIndexById(list, id) {
 	for(let i = 0; i < list.length; i++) {
-		if(list[i].id == id) {
+		if(list[i] && list[i].id == id) {
 			return i;
 		}
 	}

@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
+
 import { render } from 'react-dom';
 import { MuiThemeProvider } from 'material-ui';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 
 import normalize from 'normalize.css'; 
@@ -22,8 +23,6 @@ let store = createStore(reducer);
 class App extends Component {
 	constructor(props) {
 		super(props);
-
-		this.insertFakeMobile = false;
 	}
 
 	render() {
@@ -35,8 +34,6 @@ class App extends Component {
 	}
 }
 
-export default Component;
-
 render(
 	<Provider store={store}>
 		<MuiThemeProvider>
@@ -45,3 +42,5 @@ render(
 	</Provider>,
 	document.getElementById('app')
 );
+
+export default Component;

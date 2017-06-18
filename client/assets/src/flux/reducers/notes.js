@@ -1,68 +1,80 @@
 import update from 'react-addons-update';
 
-let noteList = [{
-	id: 0,
-	title: 'Lembrete 1',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-},{
-	id: 1,
-	title: 'Lembrete 2',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-},{
-	id: 2,
-	title: 'Lembrete 3',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-},{
-	id: 3,
-	title: 'Lembrete 4',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-},{
-	id: 4,
-	title: 'Lembrete 5',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-},{
-	id: 5,
-	title: 'Lembrete 6',
-	description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dapibus sem, a rhoncus ex. Vivamus vestibulum sagittis faucibus. Maecenas at massa at dolor finibus egestas sit amet sit amet lacus.',
-	begin: new Date(),
-	end: new Date(new Date().setDate(new Date().getDate() + 10))
-}];
+const notes = (state = {noteList: []}, action) => {
+	let noteList = null;
+	let item = null;
+	let id = null;
+	let settings = null;
 
-noteList = [];
-
-const notes = (state = {noteList: noteList}, action) => {
 	switch (action.type) {
-		case 'SAVE_NOTE':
-			let item = action.noteItem;
-			let noteList = state.noteList;
 
-			if(item.id == null) {
-				if(state.noteList.length > 0) {
-					item.id = state.noteList[state.noteList.length - 1].id + 1;
-					noteList = update(state.noteList, {[item.id]: {$set: item}});
-				} else {
-					item.id = 0;
-					noteList[0] = item;
-				}
-			} else {
-				noteList = update(state.noteList, {[item.id]: {$set: item}});
+		case 'SET_NOTES':
+			id = null;
+			let list = action.notes.map((item) => {
+				item = update(item, {
+					begin: {$set: new Date(item.begin)}, 
+					end: {$set: new Date(item.end)}
+				});
+
+				return item;
+			});
+
+			return { noteList: list }
+
+		case 'SAVE_NOTE':
+			item = action.noteItem;
+			let oldItem = action.noteItem;
+			noteList = state.noteList;
+
+			let begin = item.begin;
+			let end = item.end;
+
+			if(item.begin) {
+				begin = begin.toISOString().split(".");
+				begin = begin[0];
 			}
+
+			if(item.end) {
+				end = end.toISOString().split(".");
+				end = end[0];
+			}
+
+			item = update(item, {
+				begin: {$set: begin},
+				end: {$set: end}
+			});
+
+			settings = {
+				async: false,
+				crossDomain: true,
+				"headers": {
+					"content-type": "application/json"
+				},
+				processData: false,
+				method: item.id == null ? "POST" : "PUT",
+				data: JSON.stringify(item)
+			};
+
+			$.ajax(update(settings, {$merge: {url: helper.urls.notes + (item.id == null ? '' : item.id)}})).done((response) => {
+				noteList = update(state.noteList, {[response.id]: {$set: update(oldItem, {$merge: {id: response.id}})}});
+			});
 
 			return { noteList: noteList };
 
 		case 'DELETE_NOTE':
-			let id = action.id;
+			id = action.id;
 			let index = getIndexById(state.noteList, id);
+
+			settings = {
+				async: false,
+				crossDomain: true,
+				processData: false,
+				method: "DELETE",
+				data: JSON.stringify({id: id})
+			};
+
+			$.ajax(update(settings, {$merge: {url: helper.urls.notes + id}}));
+
 			return { noteList: update(state.noteList, {$splice: [[index, 1]]}) };
 
 		default:
@@ -72,7 +84,7 @@ const notes = (state = {noteList: noteList}, action) => {
 
 function getIndexById(list, id) {
 	for(let i = 0; i < list.length; i++) {
-		if(list[i].id == id) {
+		if(list[i] && list[i].id == id) {
 			return i;
 		}
 	}
