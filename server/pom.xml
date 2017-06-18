@@ -77,8 +77,6 @@
 						<argument>--server.port=8090</argument>
 					</arguments>
 				</configuration>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
   			</plugin>
 		</plugins>
 	</build>
